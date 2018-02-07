@@ -1,0 +1,33 @@
+body {
+	margin: 0px;
+	background-color: #000000;
+	overflow: hidden;
+}
+
+#title {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	color: #ffffff;
+	padding: 5px;
+	font-family: Monospace;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#info {
+	position: absolute;
+	top: 20px;
+	width: 100%;
+	color: #ffffff;
+	padding: 5px;
+	font-family: Monospace;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: center;
+}
+
+a {
+	color: #ff8800;
+}
