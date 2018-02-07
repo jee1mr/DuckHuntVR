@@ -25,7 +25,7 @@ function initBackground() {
 	var geometry = new THREE.SphereBufferGeometry(500, 60, 40);
 	geometry.scale(-1, 1, 1);
 	var material = new THREE.MeshBasicMaterial({
-		map: new THREE.TextureLoader().load('../textures/city.jpg')
+		map: new THREE.TextureLoader().load('/textures/city.jpg')
 	});
 	var mesh = new THREE.Mesh(geometry, material);
 	scene.add(mesh);
