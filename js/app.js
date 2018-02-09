@@ -9,6 +9,7 @@ function init() {
 	initBackground();
 	initLight();
 	initBirds();
+	addCrosshair();
 	initRenderer();
 	animate();
 }
@@ -57,6 +58,29 @@ function initRenderer() {
 
 	window.addEventListener('resize', onWindowResize, false);
 	window.addEventListener('mousedown', onMouseDown, false);
+}
+
+function addCrosshair() {
+	var material = new THREE.LineBasicMaterial({ color: 0xFF0000 });
+
+	// crosshair size
+	var x = 30, y = 30;
+
+	var geometry = new THREE.Geometry();
+
+	// crosshair
+	geometry.vertices.push(new THREE.Vector3(0, y, 0));
+	geometry.vertices.push(new THREE.Vector3(0, -y, 0));
+	geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+	geometry.vertices.push(new THREE.Vector3(x, 0, 0));    
+	geometry.vertices.push(new THREE.Vector3(-x, 0, 0));
+
+	var crosshair = new THREE.Line( geometry, material );
+
+	crosshair.position.set(50, 50, -250);
+	camera.add( crosshair );
+	scene.add( camera );
+	return crosshair;
 }
 
 function addBird(x, y, z) {
