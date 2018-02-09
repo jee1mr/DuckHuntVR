@@ -166,6 +166,18 @@ function fire(event) {
 	canShoot = 10;
 }
 
+function checkCollission() {
+	mouse.x = 0;
+	mouse.y = 0;
+	raycaster.setFromCamera(mouse, camera);
+
+	var intersects = raycaster.intersectObjects(birds);
+
+	if (intersects.length > 0) {
+		onBirdHit(intersects[0].object);
+	}
+}
+
 function bulletsMove() {
 	for(var index=0; index<bullets.length; index+=1){
 		if( bullets[index] === undefined ) continue;
@@ -175,6 +187,7 @@ function bulletsMove() {
 		}
 		
 		bullets[index].position.add(bullets[index].velocity);
+		// console.log(bullets[index].position);
 	}
 }
 
@@ -190,6 +203,7 @@ function animate() {
 	if (mouseClick === true && canShoot <= 0) {
 		console.log("fire!");
 		fire();
+		checkCollission();
 	}
 	if(canShoot > 0) canShoot -= 1;
 
