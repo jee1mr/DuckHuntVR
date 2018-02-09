@@ -7,6 +7,7 @@ var mouseClick = false;
 var canShoot = 0;
 var clock;
 var bullets = [];
+var gameOver = false;
 
 function init() {
 	clock = new THREE.Clock();
@@ -115,8 +116,10 @@ function onBirdHit(bird) {
 	console.log("onBirdHit(): score = ", score);
 	document.getElementById("score").innerHTML = score;
 	if (score >= 3) {
-		window.alert("Congrats! Game over. Play again? ");
 		score = 0;
+		gameOver = true;
+		window.alert("Congrats! Game over. Play again? ");
+		location.reload();
 	}
 	bird.position.y = 0;
 }
@@ -200,7 +203,7 @@ function animate() {
 	birdMove(birds);
 	bulletsMove();
 
-	if (mouseClick === true && canShoot <= 0) {
+	if (mouseClick === true && canShoot <= 0 && !gameOver) {
 		console.log("fire!");
 		fire();
 		checkCollission();
