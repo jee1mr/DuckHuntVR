@@ -64,7 +64,7 @@ function addCrosshair() {
 	var material = new THREE.LineBasicMaterial({ color: 0xFF0000 });
 
 	// crosshair size
-	var x = 30, y = 30;
+	var x = 0.2, y = 0.2;
 
 	var geometry = new THREE.Geometry();
 
@@ -77,7 +77,7 @@ function addCrosshair() {
 
 	var crosshair = new THREE.Line( geometry, material );
 
-	crosshair.position.set(50, 50, -250);
+	crosshair.position.set(0, 0, -1);
 	camera.add( crosshair );
 	scene.add( camera );
 	return crosshair;
