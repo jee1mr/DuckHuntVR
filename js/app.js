@@ -143,7 +143,7 @@ function fire(event) {
 
 	bullet.position.set(
 		crosshair.position.x,
-		crosshair.position.y,
+		crosshair.position.y - 0.7,
 		crosshair.position.z
 	);
 
