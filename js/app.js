@@ -14,7 +14,7 @@ function init() {
 	initBackground();
 	initLight();
 	initBirds();
-	addCrosshair();
+	crosshair = addCrosshair();
 	initRenderer();
 	animate();
 }
