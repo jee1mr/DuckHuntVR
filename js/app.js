@@ -63,6 +63,8 @@ function initRenderer() {
 	window.addEventListener('resize', onWindowResize, false);
 	window.addEventListener('mousedown', onMouseDown);
 	window.addEventListener('mouseup', onMouseUp);
+	window.addEventListener('touchstart', onMouseDown);
+	window.addEventListener('touchend', onMouseUp);
 }
 
 function addCrosshair() {
