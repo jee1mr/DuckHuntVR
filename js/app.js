@@ -3,8 +3,13 @@ var birds = [];
 var score = 0;
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
+var mouseClick = false;
+var canShoot = 0;
+var clock;
+var bullets = [];
 
 function init() {
+	clock = new THREE.Clock();
 	initScene();
 	initBackground();
 	initLight();
@@ -18,7 +23,6 @@ function initScene() {
 	renderer = new THREE.WebGLRenderer();
 	camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 10000);
 	deviceControls = new THREE.DeviceOrientationControls(camera);
-	orbitControls = new THREE.OrbitControls(camera);
 	scene = new THREE.Scene();
 }
 
@@ -57,7 +61,8 @@ function initRenderer() {
 	container.appendChild(renderer.domElement);
 
 	window.addEventListener('resize', onWindowResize, false);
-	window.addEventListener('mousedown', onMouseDown, false);
+	window.addEventListener('mousedown', onMouseDown);
+	window.addEventListener('mouseup', onMouseUp);
 }
 
 function addCrosshair() {
@@ -120,23 +125,72 @@ function onWindowResize() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onMouseDown(event) {
-	console.log("onMouseDown(): clicked");
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-	raycaster.setFromCamera(mouse, camera);
-	var intersects = raycaster.intersectObjects(birds);
+function onMouseDown(event){
+	mouseClick = true;
+}
 
-	if (intersects.length > 0) {
-		onBirdHit(intersects[0].object);
+function onMouseUp(event){
+	mouseClick = false;
+}
+
+function fire(event) {
+	var bullet = new THREE.Mesh(
+		new THREE.SphereGeometry(10,8,8),
+		new THREE.MeshBasicMaterial({color:0xFFFFFF00})
+	);	
+
+	bullet.position.set(
+		crosshair.position.x,
+		crosshair.position.y,
+		crosshair.position.z
+	);
+
+	bullet.scale.set(0.1,0.1,0.1)
+	
+	bullet.velocity = new THREE.Vector3(
+		0,
+		0,
+		-Math.cos(camera.rotation.x)
+	);
+
+	bullet.alive = true;
+	setTimeout(function(){
+		bullet.alive = false;
+		camera.remove(bullet);
+	}, 1000);
+	
+	bullets.push(bullet);
+	camera.add(bullet);
+	canShoot = 10;
+}
+
+function bulletsMove() {
+	for(var index=0; index<bullets.length; index+=1){
+		if( bullets[index] === undefined ) continue;
+		if( bullets[index].alive == false ){
+			bullets.splice(index,1);
+			continue;
+		}
+		
+		bullets[index].position.add(bullets[index].velocity);
 	}
 }
 
 function animate() {
+	var time = Date.now() * 0.0005;
+	var delta = clock.getDelta();
+
 	window.requestAnimationFrame(animate);
-	orbitControls.update();
 	deviceControls.update();
 	birdMove(birds);
+	bulletsMove();
+
+	if (mouseClick === true && canShoot <= 0) {
+		console.log("fire!");
+		fire();
+	}
+	if(canShoot > 0) canShoot -= 1;
+
 	renderer.render(scene, camera);
 }
 
